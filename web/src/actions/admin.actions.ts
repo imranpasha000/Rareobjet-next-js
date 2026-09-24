@@ -68,17 +68,11 @@ export async function saveProductAction(formData: FormData) {
     );
     productId = result.insertId;
   }
-  const file = formData.get('image');
-  if (file instanceof File && file.size > 0) {
-    if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) throw new Error('Images only, max 5MB');
-    const dir = path.join(process.cwd(), 'public', 'uploads', 'products');
-    fs.mkdirSync(dir, { recursive: true });
-    const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const filename = `${Date.now()}-${safe}`;
-    fs.writeFileSync(path.join(dir, filename), Buffer.from(await file.arrayBuffer()));
+  const uploaded = await storeUpload(formData.get('image'), 'products');
+  if (uploaded) {
     await getPool().execute(
       'INSERT INTO product_images (product_id, path, sort_order, is_primary) VALUES (:product_id, :path, 0, 1)',
-      { product_id: productId, path: `uploads/products/${filename}` }
+      { product_id: productId, path: uploaded }
     );
   }
   revalidatePath('/admin/products');
@@ -119,12 +113,25 @@ export async function adjustStockAction(formData: FormData) {
   revalidatePath('/admin/inventory');
 }
 
+async function storeUpload(file: FormDataEntryValue | null, folder: string) {
+  if (!(file instanceof File) || file.size === 0) return null;
+  if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) throw new Error('Images only, max 5MB');
+  const dir = path.join(process.cwd(), 'public', 'uploads', folder);
+  fs.mkdirSync(dir, { recursive: true });
+  const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const filename = `${Date.now()}-${safe}`;
+  fs.writeFileSync(path.join(dir, filename), Buffer.from(await file.arrayBuffer()));
+  return `uploads/${folder}/${filename}`;
+}
+
 export async function saveCategoryAction(formData: FormData) {
   await requireAdmin();
   const id = Number(formData.get('id') || 0);
   const name = String(formData.get('name') || '').trim();
+  if (!name) throw new Error('Name required');
   const slug = slugify(String(formData.get('slug') || name));
-  const image = String(formData.get('image') || '') || null;
+  const uploaded = await storeUpload(formData.get('image_file'), 'categories');
+  const image = uploaded || String(formData.get('image') || '') || null;
   const is_active = formData.get('is_active') === '0' ? 0 : 1;
   if (id) {
     await getPool().execute(

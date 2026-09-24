@@ -7,7 +7,9 @@ The app in this folder is a Next.js Node server. Do not upload it as a static si
 3. Install command: `npm install`
 4. Build command: `npm run build`
 5. Start command: `npm start`
-6. Set environment variables in hPanel (never commit them):
+6. Local test uses `.env` (`npm run dev`). Production uses `.env.production` (`npm run build` and `npm start`). Both use database `justaclick` on `127.0.0.1` with the same user and password. On the server, set `NEXT_PUBLIC_APP_URL` to the public HTTPS address and keep `COOKIE_SECURE=true`.
+
+   You can also set the same variables in hPanel (never commit them):
 
 - `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` — existing MySQL database
 - `DATABASE_URL` — same database, for Prisma if you introspect later

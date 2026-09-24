@@ -9,7 +9,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
   const back = next === '/checkout' ? '/checkout' : '';
   return (
     <main id="main-content" tabIndex={-1}>
-      <section className="global_section sign_wrapper">
+      <section className="global_section sign_wrapper sign_wrapper--center">
         <div className="container">
           <div className="sign_wrapper__content">
             <div className="sign_intro">

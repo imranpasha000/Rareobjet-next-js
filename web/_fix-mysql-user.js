@@ -10,7 +10,7 @@ import { createConnection } from 'mysql2/promise';
   for (const host of ['localhost', '127.0.0.1']) {
     await root.query(`CREATE USER IF NOT EXISTS 'imran'@'${host}' IDENTIFIED BY ?`, [pw]);
     await root.query(`ALTER USER 'imran'@'${host}' IDENTIFIED BY ?`, [pw]);
-    await root.query(`GRANT ALL PRIVILEGES ON imran.* TO 'imran'@'${host}'`);
+    await root.query(`GRANT ALL PRIVILEGES ON justaclick.* TO 'imran'@'${host}'`);
   }
   await root.query('FLUSH PRIVILEGES');
   await root.end();

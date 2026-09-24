@@ -13,10 +13,15 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
   const items = order.items as { name_snapshot: string; qty: number; line_total: number }[];
   return (
     <>
-      <h2>{String(order.order_number)}</h2>
-      <p>{String(order.customer_name)} · {String(order.status)} · stock deducted: {String(order.stock_deducted)}</p>
-      <ul>{items.map((item) => <li key={item.name_snapshot}>{item.name_snapshot} × {item.qty} — {money(item.line_total)}</li>)}</ul>
-      <p><strong>Total {money(Number(order.total))}</strong> (incl. shipping {money(Number(order.shipping))})</p>
+      <div className="page-head"><div><h2>{String(order.order_number)}</h2><p>{String(order.customer_name)} · stock deducted: {String(order.stock_deducted)}</p></div><span className="pill">{String(order.status)}</span></div>
+      <div className="panel">
+        <table className="admin-table">
+          <thead><tr><th>Item</th><th>Qty</th><th>Line</th></tr></thead>
+          <tbody>{items.map((item) => <tr key={item.name_snapshot}><td>{item.name_snapshot}</td><td>{item.qty}</td><td>{money(item.line_total)}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p><strong>Total {money(Number(order.total))}</strong> including shipping {money(Number(order.shipping))}</p>
+      <div className="order-actions">
       {next.map((status) => (
         <form key={status} action={orderStatusAction}>
           <input type="hidden" name="id" value={String(order.id)} />
@@ -24,6 +29,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ id:
           <button type="submit">Mark {status}</button>
         </form>
       ))}
+      </div>
     </>
   );
 }

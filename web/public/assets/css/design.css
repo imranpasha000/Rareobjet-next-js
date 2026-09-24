@@ -283,7 +283,9 @@ body.drawer-open { overflow: hidden; }
 .post_details__content { max-width: 800px; margin-inline: auto; }
 .post_details__content-heading p { flex-wrap: wrap; }
 .sign_wrapper { background: var(--surface-color); padding-block: var(--space-section); }
-.sign_wrapper__content { max-width: 520px; box-shadow: var(--shadow-soft); }
+.sign_wrapper--center { min-height: calc(100dvh - 220px); display: flex; align-items: center; justify-content: center; padding-block: 2.5rem; }
+.sign_wrapper--center > .container { display: flex; justify-content: center; width: 100%; }
+.sign_wrapper__content { max-width: 520px; width: 100%; margin-inline: auto; box-shadow: var(--shadow-soft); }
 .sign_intro h1 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
 .sign_submit { background: var(--main-color); }
 .password-field { position: relative; }

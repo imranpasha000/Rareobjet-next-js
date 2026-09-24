@@ -11,7 +11,8 @@ export default async function AdminOrdersPage() {
   );
   return (
     <>
-      <h2>Orders</h2>
+      <div className="page-head"><div><h2>Orders</h2><p>Track checkout through delivery.</p></div></div>
+      <div className="panel">
       <table className="admin-table">
         <thead><tr><th>Order</th><th>Customer</th><th>Status</th><th>Total</th><th></th></tr></thead>
         <tbody>
@@ -26,6 +27,7 @@ export default async function AdminOrdersPage() {
           ))}
         </tbody>
       </table>
+      </div>
     </>
   );
 }

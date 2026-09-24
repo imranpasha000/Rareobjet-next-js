@@ -10,14 +10,16 @@ import type { ResultSetHeader } from 'mysql2/promise';
 export async function registerAction(_state: { error?: string } | undefined, formData: FormData) {
   const name = String(formData.get('name') || '').trim();
   const email = String(formData.get('email') || '').trim().toLowerCase();
+  const phone = String(formData.get('phone') || '').trim();
   const password = String(formData.get('password') || '');
-  if (!name || !email || password.length < 6) return { error: 'Name, email and password (min 6 chars) are required' };
+  if (!name || !email || !phone || password.length < 6) return { error: 'Name, email, phone number and password (min 6 chars) are required' };
+  if (phone.length > 40) return { error: 'Phone number is too long' };
   const existing = await query<{ id: number }[]>('SELECT id FROM users WHERE email = :email LIMIT 1', { email });
   if (existing.length) return { error: 'Email already registered' };
   const password_hash = await bcrypt.hash(password, 10);
   const [result] = await getPool().execute<ResultSetHeader>(
-    `INSERT INTO users (name, email, password_hash, role) VALUES (:name, :email, :password_hash, 'customer')`,
-    { name, email, password_hash }
+    `INSERT INTO users (name, email, phone, password_hash, role) VALUES (:name, :email, :phone, :password_hash, 'customer')`,
+    { name, email, phone, password_hash }
   );
   await mergeGuestCart(result.insertId, await getSessionId());
   await setAuthCookie(signToken({ id: result.insertId, name, email, role: 'customer' }));

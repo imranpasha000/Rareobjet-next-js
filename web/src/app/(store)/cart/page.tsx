@@ -9,7 +9,10 @@ export default async function CartPage() {
     <main id="main-content" tabIndex={-1}>
       <section className="cart_banner">
         <div className="container">
-          <div className="cart_banner__content"><h1>your cart</h1></div>
+          <div className="cart_banner__content">
+            <p>Shopping</p>
+            <h1>Your cart</h1>
+          </div>
         </div>
       </section>
       <CartView items={cart.items} subtotal={cart.subtotal} shipping={cart.shipping} total={cart.total} />

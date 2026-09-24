@@ -36,6 +36,10 @@ export function RegisterForm({ next = '' }: { next?: string }) {
         <input id="email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
       </div>
       <div className="sign_input">
+        <label htmlFor="phone">Phone number</label>
+        <input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="Your phone number" required />
+      </div>
+      <div className="sign_input">
         <label htmlFor="password">Password</label>
         <input id="password" name="password" type="password" autoComplete="new-password" placeholder="Create a password" required />
       </div>

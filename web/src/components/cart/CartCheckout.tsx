@@ -15,53 +15,64 @@ type Item = {
 };
 
 export function CartView({ items, subtotal, shipping, total }: { items: Item[]; subtotal: number; shipping: number; total: number }) {
+  const count = items.reduce((sum, item) => sum + item.qty, 0);
   return (
-    <>
-      <section className="cart_wrapper">
-        <div className="container">
-          <div className="cart_wrapper__content">
-            <div className="cart_wrapper__content-details">
+    <section className="cart_wrapper">
+      <div className="container">
+        {!items.length ? (
+          <div className="cart-empty">
+            <p>Your cart is empty.</p>
+            <Link href="/products" className="global_btn">Continue shopping</Link>
+          </div>
+        ) : (
+          <div className="cart-layout">
+            <div className="cart-items-panel">
+              <div className="cart-items-head">
+                <h2>Items</h2>
+                <span>{count} {count === 1 ? 'piece' : 'pieces'}</span>
+              </div>
               {items.map((item) => (
-                <div className="table_flax" key={item.id}>
-                  <div className="product_details">
-                    <img src={imgSrc(item.product.images?.[0]?.path)} alt={item.product.name} className="img-fluid" />
-                    <div>
+                <article className="cart-line" key={item.id}>
+                  <Link href={`/products/${item.product.slug}`} className="cart-line__media">
+                    <img src={imgSrc(item.product.images?.[0]?.path)} alt={item.product.name} />
+                  </Link>
+                  <div className="cart-line__body">
+                    <div className="cart-line__title">
                       <Link href={`/products/${item.product.slug}`}>{item.product.name}</Link>
                       <p>{money(item.price)}</p>
                     </div>
-                  </div>
-                  <form action={updateQtyAction.bind(null, item.id, item.qty)}>
-                    <div className="cart-quantity__num">
-                      <button formAction={updateQtyAction.bind(null, item.id, Math.max(1, item.qty - 1))} type="submit">−</button>
-                      <input readOnly value={item.qty} aria-label="Quantity" />
-                      <button formAction={updateQtyAction.bind(null, item.id, item.qty + 1)} type="submit">+</button>
+                    <div className="cart-line__actions">
+                      <form action={updateQtyAction.bind(null, item.id, item.qty)}>
+                        <div className="cart-quantity__num">
+                          <button formAction={updateQtyAction.bind(null, item.id, Math.max(1, item.qty - 1))} type="submit" aria-label="Decrease quantity">−</button>
+                          <input readOnly value={item.qty} aria-label="Quantity" />
+                          <button formAction={updateQtyAction.bind(null, item.id, item.qty + 1)} type="submit" aria-label="Increase quantity">+</button>
+                        </div>
+                      </form>
+                      <form action={removeItemAction.bind(null, item.id)}>
+                        <button type="submit" className="cart-remove">Remove</button>
+                      </form>
                     </div>
-                  </form>
-                  <div className="cart_total"><h6>{money(item.line_total)}</h6></div>
-                  <div className="del-btn">
-                    <form action={removeItemAction.bind(null, item.id)}>
-                      <button type="submit">Remove</button>
-                    </form>
                   </div>
-                </div>
+                  <div className="cart_total"><h6>{money(item.line_total)}</h6></div>
+                </article>
               ))}
-              {!items.length ? <div className="cart-empty ui-status"><p>Your cart is empty.</p><Link href="/products" className="global_btn">Continue shopping</Link></div> : null}
             </div>
+            <aside className="cart-summary">
+              <h2>Order summary</h2>
+              <dl>
+                <div><dt>Subtotal</dt><dd>{money(subtotal)}</dd></div>
+                <div><dt>Shipping</dt><dd>{money(shipping)}</dd></div>
+                <div className="cart-summary__total"><dt>Estimated total</dt><dd>{money(total)}</dd></div>
+              </dl>
+              <p>Taxes are not added beyond the flat shipping amount.</p>
+              <Link href="/checkout" className="cart-checkout">Check out</Link>
+              <Link href="/products" className="cart-continue">Continue shopping</Link>
+            </aside>
           </div>
-        </div>
-      </section>
-      <section className="checkout-section" hidden={items.length === 0}>
-        <div className="container">
-          <div className="checkout-section_content">
-            <h6><span> Estimated total</span>{money(total)}</h6>
-            <p>Subtotal {money(subtotal)}. Shipping {money(shipping)}. Taxes are not added beyond the flat shipping amount.</p>
-            <div className="my-checkout">
-              <Link href="/checkout">check out</Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+        )}
+      </div>
+    </section>
   );
 }
 

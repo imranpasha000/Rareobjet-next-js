@@ -19,7 +19,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   );
   return (
     <>
-      <h2>Sales</h2>
+      <div className="page-head"><div><h2>Sales</h2><p>Confirmed, shipped, and delivered orders.</p></div></div>
       <form>
         <input type="date" name="from" defaultValue={from || ''} />
         <input type="date" name="to" defaultValue={to || ''} />

@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const low = data.lowStock as { name: string; sku: string | null; stock_qty: number }[];
   return (
     <>
-      <h2>Dashboard</h2>
+      <div className="page-head"><div><h2>Dashboard</h2><p>Orders, revenue, customers, and stock that need attention.</p></div></div>
       <div className="admin-cards">
         <div className="admin-card"><div className="label">Orders</div><div className="value">{Number(stats.orders_total || 0)}</div></div>
         <div className="admin-card"><div className="label">Pending</div><div className="value">{Number(stats.orders_pending || 0)}</div></div>
@@ -19,7 +19,8 @@ export default async function DashboardPage() {
         <div className="admin-card"><div className="label">Customers</div><div className="value">{Number(stats.customers || 0)}</div></div>
         <div className="admin-card"><div className="label">Low stock</div><div className="value">{Number(stats.low_stock || 0)}</div></div>
       </div>
-      <h3>Recent orders</h3>
+      <div className="panel">
+      <div className="panel-head"><h3>Recent orders</h3></div>
       <table className="admin-table">
         <thead><tr><th>Order</th><th>Customer</th><th>Status</th><th>Total</th><th></th></tr></thead>
         <tbody>
@@ -32,11 +33,14 @@ export default async function DashboardPage() {
           ))}
         </tbody>
       </table>
-      <h3 style={{ marginTop: 24 }}>Low stock</h3>
+      </div>
+      <div className="panel">
+      <div className="panel-head"><h3>Low stock</h3></div>
       <table className="admin-table">
         <thead><tr><th>Product</th><th>SKU</th><th>Stock</th></tr></thead>
         <tbody>{low.map((product) => <tr key={product.name}><td>{product.name}</td><td>{product.sku || '—'}</td><td>{product.stock_qty}</td></tr>)}</tbody>
       </table>
+      </div>
     </>
   );
 }

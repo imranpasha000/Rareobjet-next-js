@@ -14,14 +14,15 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
     if (!customer) return <p>Customer not found</p>;
     return (
       <>
-        <h2>{customer.name}</h2>
-        <p>{customer.email}</p>
+        <div className="page-head"><div><h2>{customer.name}</h2><p>{customer.email}</p></div></div>
+        <div className="panel">
         <form className="admin-form" action={saveCustomerAction}>
           <input type="hidden" name="id" value={customer.id} />
           <label>Phone<input name="phone" defaultValue={customer.phone || ''} /></label>
           <label>Notes<textarea name="notes" defaultValue={customer.notes || ''} /></label>
-          <button type="submit">Save</button>
+          <button type="submit">Save customer</button>
         </form>
+        </div>
       </>
     );
   }
@@ -37,7 +38,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
   );
   return (
     <>
-      <h2>Customers</h2>
+      <div className="page-head"><div><h2>Customers</h2><p>Search shoppers and keep phone and notes.</p></div></div>
       <form><input name="q" defaultValue={q || ''} placeholder="Search name, email, phone" /></form>
       <table className="admin-table">
         <thead><tr><th>Name</th><th>Email</th><th>Orders</th><th></th></tr></thead>
