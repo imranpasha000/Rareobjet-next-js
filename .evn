@@ -13,11 +13,11 @@
 # ADMIN_PASSWORD=
 
 
-DATABASE_URL=mysql://USER:Imran000@#@localhost:3306/imran
+DATABASE_URL="mysql://imran:Imran000%40%23@127.0.0.1:3306/imran"
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=imran
-DB_PASSWORD=Imran000@#
+DB_PASSWORD="Imran000@#"
 DB_NAME=imran
 JWT_SECRET=imran
 NEXT_PUBLIC_APP_URL=http://localhost:3000
@@ -25,5 +25,5 @@ SHIPPING_FLAT_INR=0
 COOKIE_SECURE=false
 DB_SSL=false
 ADMIN_EMAIL=imran@gmail.com
-ADMIN_PASSWORD=Imran000@# 
+ADMIN_PASSWORD="Imran000@#"
 
